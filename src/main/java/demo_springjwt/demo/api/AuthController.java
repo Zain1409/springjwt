@@ -30,10 +30,13 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody User user) {
+         if (userService.existsByUsername(user.getUsername())) {
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username đã tồn tại");
+         }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 
-        return userService.createUser(user);
+        return ResponseEntity.ok(userService.createUser(user));
     }
 
     @PostMapping("/login")
@@ -53,6 +56,6 @@ public class AuthController {
     @GetMapping("/hello")
     @PreAuthorize("hasAnyAuthority('USER_READ')")
     public ResponseEntity hello() {
-        return ResponseEntity.ok("hello");
+        return ResponseEntity.ok("hello234");
     }
 }

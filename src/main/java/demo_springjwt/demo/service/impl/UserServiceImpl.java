@@ -41,4 +41,11 @@ public class UserServiceImpl implements UserService {
         return userPrincipal;
     }
 
+	@Override
+	public boolean existsByUsername(String username) {
+		if(userRepository.existsByUsername(username))
+			return true;
+		return false;
+	}
+
 }
