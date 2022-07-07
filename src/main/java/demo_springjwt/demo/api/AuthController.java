@@ -53,9 +53,25 @@ public class AuthController {
         return ResponseEntity.ok(token.getToken());
     }
 
-    @GetMapping("/hello")
-    @PreAuthorize("hasAnyAuthority('USER_READ')")
-    public ResponseEntity hello() {
-        return ResponseEntity.ok("hello234");
+    @GetMapping("/free")
+    public ResponseEntity<?> hello() {
+        return ResponseEntity.ok("free");
+    }
+    
+    @GetMapping("/admin")
+    public ResponseEntity<?> admin() {
+        return ResponseEntity.ok("Admin");
+    }
+    @GetMapping("/author")
+    public ResponseEntity<?> author() {
+        return ResponseEntity.ok("author");
+    }
+    @GetMapping("/user")
+    public ResponseEntity<?> user() {
+        return ResponseEntity.ok("user");
+    }
+    @GetMapping("/editor")
+    public ResponseEntity<?> editor() {
+        return ResponseEntity.ok("editor");
     }
 }

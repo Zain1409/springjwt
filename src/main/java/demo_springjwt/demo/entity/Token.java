@@ -13,10 +13,10 @@ import java.util.Date;
 @Getter
 @Setter
 public class Token extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-    @Column(length = 1000)
+	@Column(length = 1000)
     private String token;
 
     private Date tokenExpDate;
-
 }

@@ -4,20 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "t_role")
 @Getter
 @Setter
 public class Role extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-    private String roleName;
+    private String name;
+    
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
-    private String roleKey;
-
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinTable(name = "t_role_permission", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "permission_id")})
-    private Set<Permission> permissions = new HashSet<>();
 }

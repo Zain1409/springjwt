@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -19,10 +20,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .cors() // Ngăn chặn request từ một domain khác
             .and()
         .authorizeRequests()
-            .antMatchers("/login", "/register").permitAll() // Cho phép tất cả mọi người truy cập vào địa chỉ này
-            .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập
+            .antMatchers("/login", "/register").permitAll()
+        	.antMatchers("/admin").hasAuthority("ADMIN")
+        	.antMatchers("/free").hasAnyAuthority("ADMIN", "USER", "AUTHOR", "EDITOR")
+        	.antMatchers("/author").hasAnyAuthority("AUTHOR")
+        	.antMatchers("/user").hasAnyAuthority("USER")
+        	.antMatchers("/editor").hasAnyAuthority("EDITOR")
+            .anyRequest().authenticated();
 
-    	// Thêm một lớp Filter kiểm tra jwt
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
