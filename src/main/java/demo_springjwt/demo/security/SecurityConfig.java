@@ -20,8 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .cors() // Ngăn chặn request từ một domain khác
             .and()
         .authorizeRequests()
-            .antMatchers("/login", "/register").permitAll()
-        	.antMatchers("/admin").hasAuthority("ADMIN")
+            .antMatchers("/login", "/register", "/logout").permitAll()
+        	.antMatchers("/admin", "/admin/**").hasAuthority("ADMIN")
         	.antMatchers("/free").hasAnyAuthority("ADMIN", "USER", "AUTHOR", "EDITOR")
         	.antMatchers("/author").hasAnyAuthority("AUTHOR")
         	.antMatchers("/user").hasAnyAuthority("USER")

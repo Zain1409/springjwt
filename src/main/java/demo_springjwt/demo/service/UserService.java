@@ -1,6 +1,6 @@
 package demo_springjwt.demo.service;
 
-import demo_springjwt.demo.entity.User;
+import demo_springjwt.demo.dto.User;
 import demo_springjwt.demo.security.UserPrincipal;
 
 public interface UserService {

@@ -9,6 +9,7 @@ import com.nimbusds.jwt.SignedJWT;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -19,8 +20,13 @@ public class JwtUtil {
 
     private static Logger logger = LoggerFactory.getLogger(JwtUtil.class);
     private static final String USER = "user";
-    private static final String SECRET = "daycaidaynaychinhlachukycuabandungdelorangoaidaynhenguyhiemchetnguoidayhihihi";
-
+    
+    @Value("${demo.jwt.secret}")
+    private String secret;
+    
+    @Value("${demo.jwt.expirationTime}")
+    private Long expirationTime;
+    
     public String generateToken(UserPrincipal user) {
         String token = null;
         try {
@@ -29,7 +35,7 @@ public class JwtUtil {
             builder.expirationTime(generateExpirationDate());
             JWTClaimsSet claimsSet = builder.build();
             SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
-            JWSSigner signer = new MACSigner(SECRET.getBytes());
+            JWSSigner signer = new MACSigner(secret.getBytes());
             signedJWT.sign(signer);
             token = signedJWT.serialize();
         } catch (Exception e) {
@@ -39,14 +45,14 @@ public class JwtUtil {
     }
 
     public Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + 864000000);
+        return new Date(System.currentTimeMillis() + expirationTime);
     }
 
     private JWTClaimsSet getClaimsFromToken(String token) {
         JWTClaimsSet claims = null;
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
-            JWSVerifier verifier = new MACVerifier(SECRET.getBytes());
+            JWSVerifier verifier = new MACVerifier(secret.getBytes());
             if (signedJWT.verify(verifier)) {
                 claims = signedJWT.getJWTClaimsSet();
             }

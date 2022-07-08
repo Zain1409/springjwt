@@ -4,14 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 @Entity
 @Table(name = "t_user")
 @Getter
 @Setter
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	private String username;
@@ -20,5 +20,5 @@ public class User extends BaseEntity {
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "t_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Role> roles = new HashSet<>();
+    private List<RoleEntity> roleEntities;
 }

@@ -1,5 +1,7 @@
 package demo_springjwt.demo.api;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import demo_springjwt.demo.entity.Token;
-import demo_springjwt.demo.entity.User;
+import demo_springjwt.demo.dto.User;
+import demo_springjwt.demo.entity.TokenEntity;
+import demo_springjwt.demo.exception.ExpiredException;
 import demo_springjwt.demo.security.JwtUtil;
 import demo_springjwt.demo.security.UserPrincipal;
 import demo_springjwt.demo.service.TokenService;
 import demo_springjwt.demo.service.UserService;
 
 @RestController
-public class AuthController {
+public class AuthController extends BaseController{
 
     @Autowired
     private UserService userService;
@@ -45,14 +48,14 @@ public class AuthController {
         if (null == user || !new BCryptPasswordEncoder().matches(user.getPassword(), userPrincipal.getPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("tài khoản hoặc mật khẩu không chính xác");
         }
-        Token token = new Token();
+        TokenEntity token = new TokenEntity();
         token.setToken(jwtUtil.generateToken(userPrincipal));
         token.setTokenExpDate(jwtUtil.generateExpirationDate());
         token.setCreatedBy(userPrincipal.getUserId());
         tokenService.createToken(token);
         return ResponseEntity.ok(token.getToken());
     }
-
+    
     @GetMapping("/free")
     public ResponseEntity<?> hello() {
         return ResponseEntity.ok("free");
@@ -62,6 +65,7 @@ public class AuthController {
     public ResponseEntity<?> admin() {
         return ResponseEntity.ok("Admin");
     }
+    
     @GetMapping("/author")
     public ResponseEntity<?> author() {
         return ResponseEntity.ok("author");
@@ -73,5 +77,12 @@ public class AuthController {
     @GetMapping("/editor")
     public ResponseEntity<?> editor() {
         return ResponseEntity.ok("editor");
+    }
+    
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/hello")
+    public ResponseEntity<?> showUserPage() throws ExpiredException {
+    	Optional<User> user = this.getCurrentUser();
+        return ResponseEntity.ok(user);
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import demo_springjwt.demo.entity.Token;
+import demo_springjwt.demo.entity.TokenEntity;
 import demo_springjwt.demo.service.TokenService;
 
 import javax.servlet.FilterChain;
@@ -37,14 +37,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
 
         UserPrincipal user = null;
-        Token token = null;
+        TokenEntity tokenEntity = null;
         if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Token ")) {
             String jwt = authorizationHeader.substring(6);
             user = jwtUtil.getUserFromToken(jwt);
-            token = verificationTokenService.findByToken(jwt);
+            tokenEntity = verificationTokenService.findByToken(jwt);
         }
 
-        if (null != user && null != token && token.getTokenExpDate().after(new Date())) {
+        if (null != user && null != tokenEntity && tokenEntity.getTokenExpDate().after(new Date())) {
             Set<GrantedAuthority> authorities = new HashSet<>();
             user.getAuthorities().forEach(p -> authorities.add(new SimpleGrantedAuthority((String) p)));
             UsernamePasswordAuthenticationToken authentication =

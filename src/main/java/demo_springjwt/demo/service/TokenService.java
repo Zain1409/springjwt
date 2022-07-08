@@ -1,10 +1,12 @@
 package demo_springjwt.demo.service;
 
-import demo_springjwt.demo.entity.Token;
+import demo_springjwt.demo.entity.TokenEntity;
 
 public interface TokenService {
 
-    Token createToken(Token token);
+    TokenEntity createToken(TokenEntity tokenEntity);
 
-    Token findByToken(String token);
+    TokenEntity findByToken(String token);
+    
+    void delete(TokenEntity token);
 }

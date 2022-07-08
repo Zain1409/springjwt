@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(name = "t_token")
 @Getter
 @Setter
-public class Token extends BaseEntity {
+public class TokenEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 1000)

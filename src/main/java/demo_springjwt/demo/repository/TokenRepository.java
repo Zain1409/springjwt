@@ -2,9 +2,9 @@ package demo_springjwt.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import demo_springjwt.demo.entity.Token;
+import demo_springjwt.demo.entity.TokenEntity;
 
-public interface TokenRepository extends JpaRepository<Token, Long> {
+public interface TokenRepository extends JpaRepository<TokenEntity, Long> {
 
-    Token findByToken(String token);
+    TokenEntity findByToken(String token);
 }

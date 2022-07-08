@@ -9,7 +9,10 @@ import java.util.Collection;
 @Getter
 @Setter
 public class UserPrincipal implements UserDetails {
-    private Long userId;
+	
+	private static final long serialVersionUID = 1L;
+	
+	private Long userId;
     private String username;
     private String password;
     private Collection authorities;
