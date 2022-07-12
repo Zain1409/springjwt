@@ -18,7 +18,7 @@ public class User {
 	
 	public static User toDto(UserEntity enity) {
 		User user = new User();
-		user.setId(user.getId());
+		user.setId(enity.getId());
 		user.setUsername(enity.getUsername());
 		user.setPassword(enity.getPassword());
 		user.setDeleted(enity.isDeleted());
